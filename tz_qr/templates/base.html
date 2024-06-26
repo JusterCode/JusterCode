@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АСВ - Личный кабинет</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .info h2 {
+            font-size: 20px;
+            color: #333;
+        }
+        .info p {
+            font-size: 16px;
+            color: #555;
+        }
+        .blurred {
+            color: rgba(0, 0, 0, 0.5);
+        }
+        .error {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .debt-amount {
+            font-size: 50px;
+            font-weight: bold;
+            color: #d9534f;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .payment-form {
+            margin-top: 20px;
+        }
+        .quick-pay-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .quick-pay-buttons button {
+            width: 22%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .quick-pay-buttons button:hover {
+            background-color: #218838;
+        }
+        .countdown-container {
+            text-align: center;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+        .countdown span {
+            font-size: 24px;
+            color: #d9534f;
+            margin-left: 10px;
+        }
+        .lamp {
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        .contacts {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>АСВ - Личный кабинет</h1>
+        </div>
+        <p>Уважаемый И**** Иван Ива****ч,</p>
+        <p>Для получения важной информации по вашему долгу, введите свою дату рождения. Несвоевременная оплата может повлечь за собой серьезные юридические последствия, включая судебные разбирательства и арест имущества.</p>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="dob">Введите вашу дату рождения:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <button type="submit" class="btn">Войти</button>
+        </form>
+        <div id="error-message" class="error" style="display:none;">
+            Неверная дата рождения. Пожалуйста, попробуйте снова.
+        </div>
+        <div id="debt-info" class="info" style="display:none;">
+            <h2>Уважаемый Иван Иванович,</h2>
+            <p class="debt-amount">Сумма вашего долга составляет <span id="total-debt">12,743.43</span> рублей</p>
+            <div class="countdown-container">
+                <div class="countdown" id="countdown">Возможность досудебного урегулирования завершится через:</div>
+                <div class="lamp"></div>
+            </div>
+            <p>Если не оплатить долг в течение 30 дней, это может повлечь за собой серьезные юридические последствия, включая судебные разбирательства и арест имущества.</p>
+            <p class="debt-amount">Сумма вашего долга составляет <span id="total-debt-duplicate">12,743.43</span> рублей</p>
+            <p>ВНИМАНИЕ! Права по вашему долгу перешли к ООО "Профессиональная коллекторская организация «Агентство Судебного Взыскания». Срочно погасите задолженность в размере <span id="total-debt-notification">12,743.43</span> руб.</p>
+            <div class="payment-form">
+                <div class="quick-pay-buttons">
+                    <button type="button" onclick="setPaymentAmount(25)">25%</button>
+                    <button type="button" onclick="setPaymentAmount(50)">50%</button>
+                    <button type="button" onclick="setPaymentAmount(75)">75%</button>
+                    <button type="button" onclick="setPaymentAmount(100)">100%</button>
+                </div>
+                <form id="payment-form">
+                    <div class="form-group">
+                        <label for="amount">Введите сумму для оплаты:</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                        <input type="hidden" id="description" name="description" value="Оплата долга - номер кредитного договора 1241232 - Иван Иванович">
+                    </div>
+                    <button type="button" class="btn" onclick="makePayment()">Оплатить</button>
+                </form>
+                <div id="payment-message" class="error" style="display:none;"></div>
+            </div>
+        </div>
+        <div class="contacts">
+            <p>Узнать размер Вашей задолженности, обсудить оптимальный вариант ее погашения и задать другие вопросы можно:</p>
+            <p>Позвонив по бесплатному телефону: 8 800 600 99 97</p>
+            <p>Написать на наш email: LegalCollection@lca.ooo</p>
+            <p>Написав нам в любом из мессенджеров по номеру: +7 921 959 61 49</p>
+            <p>WhatsApp | Viber | Telegram</p>
+        </div>
+    </div>
+    <script>
+        const totalDebt = 12743.43;
+
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const enteredDate = document.getElementById('dob').value;
+            const validDate = '2024-05-27';
+            if (enteredDate === validDate) {
+                document.getElementById('debt-info').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+                startCountdown();
+            } else {
+                document.getElementById('debt-info').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+
+        function makePayment() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const description = document.getElementById('description').value;
+            if (amount > totalDebt) {
+                document.getElementById('payment-message').textContent = 'Сумма не может превышать долг.';
+                document.getElementById('payment-message').style.display = 'block';
+            } else if (amount <= 0) {
+                document.getElementById('payment-message').textContent = 'Минимальная сумма платежа - 1 рубль.';
+                document.getElementById('payment-message').style.display = 'block';
+            } else {
+                document.getElementById('payment-message').style.display = 'none';
+                const formData = new FormData();
+                formData.append('amount', amount);
+                formData.append('description', description);
+                fetch('/generate_payment_link', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.payment_url) {
+                        window.location.href = data.payment_url;
+                    } else {
+                        console.error('Error in response:', data);
+                        document.getElementById('payment-message').textContent = 'Ошибка при создании платежа. Пожалуйста, попробуйте снова.';
+                        document.getElementById('payment-message').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('payment-message').textContent = 'Ошибка при создании платежа. Пожалуйста, попробуйте снова.';
+                    document.getElementById('payment-message').style.display = 'block';
+                });
+            }
+        }
+
+        function setPaymentAmount(percentage) {
+            const amount = (totalDebt * (percentage / 100)).toFixed(2);
+            document.getElementById('amount').value = amount;
+        }
+
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const deadline = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)).getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = deadline - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownElement.innerHTML = `Возможность досудебного урегулирования завершится через: <span>${days}д ${hours}ч ${minutes}м ${seconds}с</span>`;
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    countdownElement.innerHTML = "Срок досудебного урегулирования истек.";
+                }
+            }
+
+            const interval = setInterval(updateCountdown, 1000);
+        }
+    </script>
+</body>
+</html>
